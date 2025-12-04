@@ -60,6 +60,22 @@
 			"Controllers": ["Keypad"],
 			"States": [{ "Image": "icons/shuffle_off" }, { "Image": "icons/shuffle_on" }],
 			"DisableAutomaticStates": true
+		},
+		{
+			"UUID": "me.amankhanna.oampris.seekback",
+			"Name": "Seek Back",
+			"Icon": "icons/seek_back",
+			"Tooltip": "Seek 10 seconds backward",
+			"Controllers": ["Keypad"],
+			"States": [{ "Image": "actionDefaultImage" }]
+		},
+		{
+			"UUID": "me.amankhanna.oampris.seekforward",
+			"Name": "Seek Forward",
+			"Icon": "icons/seek_forward",
+			"Tooltip": "Seek 10 seconds forward",
+			"Controllers": ["Keypad"],
+			"States": [{ "Image": "actionDefaultImage" }]
 		}
 	]
 }

@@ -86,6 +86,12 @@ async fn toggle_shuffle() -> Result<()> {
 	Ok(())
 }
 
+async fn seek_relative(offset_microseconds: i64) -> Result<()> {
+	let proxy = get_mpris_proxy().await?;
+	proxy.call_method("Seek", &(offset_microseconds,)).await?;
+	Ok(())
+}
+
 async fn get_album_art(metadata: Option<&Value<'_>>) -> Option<String> {
 	fetch_and_convert_to_data_url(
 		&metadata?
@@ -308,6 +314,8 @@ async fn main() -> OpenActionResult<()> {
 	register_action(NextAction {}).await;
 	register_action(RepeatAction {}).await;
 	register_action(ShuffleAction {}).await;
+	register_action(SeekBackAction {}).await;
+	register_action(SeekForwardAction {}).await;
 
 	tokio::spawn(watch_album_art());
 
