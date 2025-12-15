@@ -62,18 +62,18 @@
 			"DisableAutomaticStates": true
 		},
 		{
-			"UUID": "me.amankhanna.oampris.seekback",
-			"Name": "Seek Back",
-			"Icon": "icons/seek_back",
-			"Tooltip": "Seek 10 seconds backward",
+			"UUID": "me.amankhanna.oampris.seekbackwards",
+			"Name": "Seek Backwards",
+			"Icon": "icons/seek_backwards",
+			"Tooltip": "Seek 10 seconds backwards",
 			"Controllers": ["Keypad"],
 			"States": [{ "Image": "actionDefaultImage" }]
 		},
 		{
-			"UUID": "me.amankhanna.oampris.seekforward",
-			"Name": "Seek Forward",
-			"Icon": "icons/seek_forward",
-			"Tooltip": "Seek 10 seconds forward",
+			"UUID": "me.amankhanna.oampris.seekforwards",
+			"Name": "Seek Forwards",
+			"Icon": "icons/seek_forwards",
+			"Tooltip": "Seek 10 seconds forwards",
 			"Controllers": ["Keypad"],
 			"States": [{ "Image": "actionDefaultImage" }]
 		}

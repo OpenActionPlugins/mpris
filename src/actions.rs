@@ -1,4 +1,4 @@
-use super::{call_mpris_method, cycle_repeat_mode, seek_relative, toggle_shuffle, update_all};
+use super::{call_mpris_method, cycle_repeat_mode, seek, toggle_shuffle, update_all};
 
 use std::collections::HashMap;
 
@@ -118,10 +118,10 @@ impl Action for ShuffleAction {
 	}
 }
 
-pub struct SeekBackAction;
+pub struct SeekBackwardsAction;
 #[async_trait]
-impl Action for SeekBackAction {
-	const UUID: ActionUuid = "me.amankhanna.oampris.seekback";
+impl Action for SeekBackwardsAction {
+	const UUID: ActionUuid = "me.amankhanna.oampris.seekbackwards";
 	type Settings = HashMap<String, String>;
 
 	async fn will_appear(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
@@ -130,17 +130,17 @@ impl Action for SeekBackAction {
 	}
 
 	async fn key_up(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
-		if let Err(error) = seek_relative(-10_000_000).await {
-			log::error!("Failed to make SeekBack MPRIS call: {}", error);
+		if let Err(error) = seek(-10_000_000).await {
+			log::error!("Failed to make Seek MPRIS call: {}", error);
 		}
 		Ok(())
 	}
 }
 
-pub struct SeekForwardAction;
+pub struct SeekForwardsAction;
 #[async_trait]
-impl Action for SeekForwardAction {
-	const UUID: ActionUuid = "me.amankhanna.oampris.seekforward";
+impl Action for SeekForwardsAction {
+	const UUID: ActionUuid = "me.amankhanna.oampris.seekforwards";
 	type Settings = HashMap<String, String>;
 
 	async fn will_appear(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
@@ -149,8 +149,8 @@ impl Action for SeekForwardAction {
 	}
 
 	async fn key_up(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
-		if let Err(error) = seek_relative(10_000_000).await {
-			log::error!("Failed to make SeekForward MPRIS call: {}", error);
+		if let Err(error) = seek(10_000_000).await {
+			log::error!("Failed to make Seek MPRIS call: {}", error);
 		}
 		Ok(())
 	}
