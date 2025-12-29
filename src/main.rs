@@ -274,23 +274,31 @@ async fn watch_album_art() {
 
 			let album_art_url = get_album_art(changed_properties.get("Metadata")).await;
 
-			for instance in visible_instances(PlayPauseAction::UUID).await {
-				if let Err(error) = update_play_pause(&instance, album_art_url.clone()).await {
-					log::error!("Failed to update PlayPause: {}", error);
+			if album_art_url.is_some() {
+				for instance in visible_instances(PlayPauseAction::UUID).await {
+					if let Err(error) = update_play_pause(&instance, album_art_url.clone()).await {
+						log::error!("Failed to update PlayPause: {}", error);
+					}
 				}
 			}
-			for instance in visible_instances(RepeatAction::UUID).await {
-				if let Err(error) =
-					update_repeat(&instance, changed_properties.get("LoopStatus")).await
-				{
-					log::error!("Failed to update Repeat: {}", error);
+
+			if changed_properties.get("LoopStatus").is_some() {
+				for instance in visible_instances(RepeatAction::UUID).await {
+					if let Err(error) =
+						update_repeat(&instance, changed_properties.get("LoopStatus")).await
+					{
+						log::error!("Failed to update Repeat: {}", error);
+					}
 				}
 			}
-			for instance in visible_instances(ShuffleAction::UUID).await {
-				if let Err(error) =
-					update_shuffle(&instance, changed_properties.get("Shuffle")).await
-				{
-					log::error!("Failed to update Shuffle: {}", error);
+
+			if changed_properties.get("Shuffle").is_some() {
+				for instance in visible_instances(ShuffleAction::UUID).await {
+					if let Err(error) =
+						update_shuffle(&instance, changed_properties.get("Shuffle")).await
+					{
+						log::error!("Failed to update Shuffle: {}", error);
+					}
 				}
 			}
 		}
