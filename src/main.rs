@@ -282,7 +282,7 @@ async fn watch_album_art() {
 				}
 			}
 
-			if changed_properties.get("LoopStatus").is_some() {
+			if changed_properties.contains_key("LoopStatus") {
 				for instance in visible_instances(RepeatAction::UUID).await {
 					if let Err(error) =
 						update_repeat(&instance, changed_properties.get("LoopStatus")).await
@@ -292,7 +292,7 @@ async fn watch_album_art() {
 				}
 			}
 
-			if changed_properties.get("Shuffle").is_some() {
+			if changed_properties.contains_key("Shuffle") {
 				for instance in visible_instances(ShuffleAction::UUID).await {
 					if let Err(error) =
 						update_shuffle(&instance, changed_properties.get("Shuffle")).await
