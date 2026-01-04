@@ -98,7 +98,7 @@ async fn change_volume(instance: &Instance, delta: f64) -> Result<()> {
 
 	match proxy.get_property::<f64>("Volume").await {
 		Err(zbus::Error::FDO(e)) => {
-			if let zbus::fdo::Error::NotSupported(msg) = *e {
+			if let zbus::fdo::Error::NotSupported(msg) = e.as_ref() {
 				log::warn!("Volume control not supported by the current MPRIS player: {}", msg);
 			} else {
 				log::warn!("Failed to get volume via MPRIS: {}", e);
