@@ -39,7 +39,6 @@ async fn find_active_player(conn: &Connection) -> Result<String> {
 	.await?;
 
 	let names: Vec<String> = proxy.call("ListNames", &()).await?;
-
 	names
 		.into_iter()
 		.find(|name| name.starts_with("org.mpris.MediaPlayer2."))
