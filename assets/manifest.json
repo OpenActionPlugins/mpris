@@ -81,7 +81,7 @@
 			"UUID": "me.amankhanna.oampris.volumeup",
 			"Name": "Volume Up",
 			"Icon": "icons/volume_up",
-			"Tooltip": "Volume Up",
+			"Tooltip": "Increase the player volume",
 			"Controllers": ["Keypad"],
 			"States": [{ "Image": "actionDefaultImage" }]
 		},
@@ -89,7 +89,7 @@
 			"UUID": "me.amankhanna.oampris.volumedown",
 			"Name": "Volume Down",
 			"Icon": "icons/volume_down",
-			"Tooltip": "Volume Down",
+			"Tooltip": "Decrease the player volume",
 			"Controllers": ["Keypad"],
 			"States": [{ "Image": "actionDefaultImage" }]
 		}
