@@ -39,6 +39,7 @@ async fn find_active_player(conn: &Connection) -> Result<String> {
 	.await?;
 
 	let names: Vec<String> = proxy.call("ListNames", &()).await?;
+
 	names
 		.into_iter()
 		.find(|name| name.starts_with("org.mpris.MediaPlayer2."))
@@ -89,6 +90,38 @@ async fn toggle_shuffle() -> Result<()> {
 async fn seek(offset_microseconds: i64) -> Result<()> {
 	let proxy = get_mpris_proxy().await?;
 	proxy.call_method("Seek", &(offset_microseconds,)).await?;
+	Ok(())
+}
+
+async fn change_volume(instance: &Instance, delta: f64) -> Result<()> {
+	let proxy = get_mpris_proxy().await?;
+
+	match proxy.get_property::<f64>("Volume").await {
+		Err(zbus::Error::FDO(e)) => {
+			if let zbus::fdo::Error::NotSupported(msg) = *e {
+				log::warn!("Volume control not supported by the current MPRIS player: {}", msg);
+			} else {
+				log::warn!("Failed to get volume via MPRIS: {}", e);
+			}
+			let _ = instance.show_alert().await;
+			return Ok(());
+		},
+		Err(e) => {
+			log::warn!("Failed to get volume via MPRIS: {}", e);
+			let _ = instance.show_alert().await;
+			return Err(e.into());
+		},
+		Ok(current) => {
+			let new = (current + delta).clamp(0.0, 1.0);
+
+			if let Err(e) = proxy.set_property("Volume", &new).await {
+				log::warn!("Failed to set volume via MPRIS: {}", e);
+				let _ = instance.show_alert().await;
+				return Err(e.into());
+			}
+		},
+	}
+
 	Ok(())
 }
 
@@ -324,6 +357,8 @@ async fn main() -> OpenActionResult<()> {
 	register_action(ShuffleAction {}).await;
 	register_action(SeekBackwardsAction {}).await;
 	register_action(SeekForwardsAction {}).await;
+	register_action(VolumeUpAction {}).await;
+	register_action(VolumeDownAction {}).await;
 
 	tokio::spawn(watch_album_art());
 

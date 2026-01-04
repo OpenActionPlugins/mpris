@@ -1,4 +1,4 @@
-use super::{call_mpris_method, cycle_repeat_mode, seek, toggle_shuffle, update_all};
+use super::{call_mpris_method, cycle_repeat_mode, seek, toggle_shuffle, update_all, change_volume};
 
 use std::collections::HashMap;
 
@@ -151,6 +151,44 @@ impl Action for SeekForwardsAction {
 	async fn key_up(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
 		if let Err(error) = seek(10_000_000).await {
 			log::error!("Failed to make Seek MPRIS call: {}", error);
+		}
+		Ok(())
+	}
+}
+
+pub struct VolumeUpAction;
+#[async_trait]
+impl Action for VolumeUpAction {
+	const UUID: ActionUuid = "me.amankhanna.oampris.volumeup";
+	type Settings = HashMap<String, String>;
+
+	async fn will_appear(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
+		update_all().await;
+		Ok(())
+	}
+
+	async fn key_up(&self, instance: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
+		if let Err(error) = change_volume(instance, 0.05).await {
+			log::error!("Failed to change volume up: {}", error);
+		}
+		Ok(())
+	}
+}
+
+pub struct VolumeDownAction;
+#[async_trait]
+impl Action for VolumeDownAction {
+	const UUID: ActionUuid = "me.amankhanna.oampris.volumedown";
+	type Settings = HashMap<String, String>;
+
+	async fn will_appear(&self, _: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
+		update_all().await;
+		Ok(())
+	}
+
+	async fn key_up(&self, instance: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
+		if let Err(error) = change_volume(instance, -0.05).await {
+			log::error!("Failed to change volume down: {}", error);
 		}
 		Ok(())
 	}
