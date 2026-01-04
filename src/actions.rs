@@ -169,7 +169,7 @@ impl Action for VolumeUpAction {
 
 	async fn key_up(&self, instance: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
 		if let Err(error) = change_volume(instance, 0.05).await {
-			log::error!("Failed to change volume up: {}", error);
+			log::error!("Failed to make Volume (up) MPRIS call: {}", error);
 		}
 		Ok(())
 	}
@@ -188,7 +188,7 @@ impl Action for VolumeDownAction {
 
 	async fn key_up(&self, instance: &Instance, _: &Self::Settings) -> OpenActionResult<()> {
 		if let Err(error) = change_volume(instance, -0.05).await {
-			log::error!("Failed to change volume down: {}", error);
+			log::error!("Failed to make Volume (down) MPRIS call: {}", error);
 		}
 		Ok(())
 	}
