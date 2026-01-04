@@ -1,4 +1,6 @@
-use super::{call_mpris_method, cycle_repeat_mode, seek, toggle_shuffle, update_all, change_volume};
+use super::{
+	call_mpris_method, change_volume, cycle_repeat_mode, seek, toggle_shuffle, update_all,
+};
 
 use std::collections::HashMap;
 
